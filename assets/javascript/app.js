@@ -50,12 +50,49 @@ function addTrain() {
   $("#frequency").val("");
 }
 
+// Pulls individual train info from firebase and displays it in the Current Train Schedule table
+function displayTrain() {
+
+}
+
 // MAIN PROCESS
 // ==========================================================================================
 
-// When the add train button is clicked, the addTrain function is executed without refreshing
-// the page
-$("#add-train").on("click", function() {
-  event.preventDefault();
-  addTrain();
+$(document).ready(function() {
+  // Runs the displayTrain function immediately when the page is ready so existing trains in 
+  // the database are shown
+  displayTrain();
+
+  // When the add train button is clicked, the addTrain function is executed without refreshing
+  // the page
+  $("#add-train").on("click", function() {
+    event.preventDefault();
+    addTrain();
+  });
+
+  database.ref().on("child_added", function(childSnapshot, prevChildKey) {
+    console.log(childSnapshot.val());
+
+    var trainName = childSnapshot.val().trainName;
+    var destination = childSnapshot.val().destination;
+    var firstTrainTime = childSnapshot.val().firstTrainTime;
+    var frequency = childSnapshot.val().frequency;
+
+    console.log(trainName);
+    console.log(destination);
+    console.log(firstTrainTime);
+    console.log(frequency);
+
+    var newRow = $("<tr>");
+    var nameData = $("<td>").text(trainName);
+    var destinationData = $("<td>").text(destination);
+    var timeData = $("<td>").text(firstTrainTime);
+    var frequencyData = $("<td>").text(frequency);
+    newRow.append(nameData);
+    newRow.append(destinationData);
+    newRow.append(timeData);
+    newRow.append(frequencyData);
+    $("#schedule").append(newRow);
+  });
+
 });
