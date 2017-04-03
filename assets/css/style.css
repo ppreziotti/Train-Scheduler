@@ -1,5 +1,16 @@
 .jumbotron {
 	background-image: url('../images/train.jpg');
-	background-size: cover:
+	background-size: cover;
 	background-position: center center;
+	color: cyan;
+	text-align: center;
+}
+
+.panel-default > .panel-heading {
+	background-color: cyan;
+	font-weight: bold;
+}
+
+#add-train {
+	background-color: cyan;
 }

@@ -50,19 +50,10 @@ function addTrain() {
   $("#frequency").val("");
 }
 
-// Pulls individual train info from firebase and displays it in the Current Train Schedule table
-function displayTrain() {
-
-}
-
 // MAIN PROCESS
 // ==========================================================================================
 
 $(document).ready(function() {
-  // Runs the displayTrain function immediately when the page is ready so existing trains in 
-  // the database are shown
-  displayTrain();
-
   // When the add train button is clicked, the addTrain function is executed without refreshing
   // the page
   $("#add-train").on("click", function() {
@@ -71,7 +62,10 @@ $(document).ready(function() {
   });
 
   // Runs function when a new child is added to the database
-  // 
+  // Train info is pulled from the database, first train time is converted to 12 hour format
+  // using MomentJS, math is utilized to determine the next arrival time and minutes away
+  // based on the current time (from MomentJS), and all of this info is displayed in the
+  // Current Schedule panel
   database.ref().on("child_added", function(childSnapshot, prevChildKey) {
     console.log(childSnapshot.val());
 
@@ -90,7 +84,7 @@ $(document).ready(function() {
     var timeDifference = moment().diff(moment(firstTrainTimeConverted), "minutes");
     var timeRemainder = timeDifference % frequency;
     var minutesAway = frequency - timeRemainder;
-    var nextArrival = moment().add(minutesAway, "minutes").format("hh:mm A");
+    var nextArrival = moment().add(minutesAway, "minutes").format("h:mm A");
 
     console.log(currentTime);
     console.log(minutesAway);
