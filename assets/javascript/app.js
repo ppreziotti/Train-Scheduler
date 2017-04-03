@@ -70,6 +70,8 @@ $(document).ready(function() {
     addTrain();
   });
 
+  // Runs function when a new child is added to the database
+  // 
   database.ref().on("child_added", function(childSnapshot, prevChildKey) {
     console.log(childSnapshot.val());
 
@@ -83,15 +85,29 @@ $(document).ready(function() {
     console.log(firstTrainTime);
     console.log(frequency);
 
+    var currentTime = moment();
+    var firstTrainTimeConverted = moment(firstTrainTime, "hh:mm").subtract(1, "years");
+    var timeDifference = moment().diff(moment(firstTrainTimeConverted), "minutes");
+    var timeRemainder = timeDifference % frequency;
+    var minutesAway = frequency - timeRemainder;
+    var nextArrival = moment().add(minutesAway, "minutes").format("hh:mm A");
+
+    console.log(currentTime);
+    console.log(minutesAway);
+    console.log(nextArrival);
+
     var newRow = $("<tr>");
     var nameData = $("<td>").text(trainName);
     var destinationData = $("<td>").text(destination);
-    var timeData = $("<td>").text(firstTrainTime);
     var frequencyData = $("<td>").text(frequency);
+    var nextArrivalData = $("<td>").text(nextArrival);
+    var minutesAwayData = $("<td>").text(minutesAway);
+
     newRow.append(nameData);
     newRow.append(destinationData);
-    newRow.append(timeData);
     newRow.append(frequencyData);
+    newRow.append(nextArrivalData);
+    newRow.append(minutesAwayData);
     $("#schedule").append(newRow);
   });
 
