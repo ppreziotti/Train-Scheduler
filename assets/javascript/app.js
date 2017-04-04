@@ -53,12 +53,25 @@ function addTrain() {
 // MAIN PROCESS
 // ==========================================================================================
 
+// Runs the following logic once the page is ready
 $(document).ready(function() {
-  // When the add train button is clicked, the addTrain function is executed without refreshing
-  // the page
+  // When the add train button is clicked the addTrain function is executed without refreshing
+  // the page. The function will not be executed if the first train time entered is not valid or
+  // if the frequency entered is not a number. In these cases the user is given an alert instead.
   $("#add-train").on("click", function() {
     event.preventDefault();
-    addTrain();
+    var firstTrainTime = $("#first-train-time").val().trim();
+    var frequency = $("#frequency").val().trim();
+    console.log(firstTrainTime);
+    if (!moment(firstTrainTime, "hh:mm").isValid()) {
+      alert("Please enter a valid time.");
+    }
+    else if (isNaN(frequency)) {
+      alert("Please enter a valid frequency.");
+    }
+    else {
+      addTrain();
+    }
   });
 
   // Runs function when a new child is added to the database
