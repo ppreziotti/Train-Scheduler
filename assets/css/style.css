@@ -2,15 +2,28 @@
 	background-image: url('../images/train.jpg');
 	background-size: cover;
 	background-position: center center;
-	color: cyan;
+	color: #FF3F00;
 	text-align: center;
 }
 
+body {
+	background-image: url('../images/old_moon.png');
+}
+
+.panel-default {
+	border: 1px solid black;
+}
+
 .panel-default > .panel-heading {
-	background-color: cyan;
+	background-color: #FF3F00;
 	font-weight: bold;
 }
 
+table {
+	border-top: none;
+}
+
 #add-train {
-	background-color: cyan;
+	background-color: #FF3F00;
+	font-weight: bold;
 }

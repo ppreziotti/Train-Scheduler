@@ -57,16 +57,18 @@ function addTrain() {
 $(document).ready(function() {
   // When the add train button is clicked the addTrain function is executed without refreshing
   // the page. The function will not be executed if the first train time entered is not valid or
-  // if the frequency entered is not a number. In these cases the user is given an alert instead.
+  // if the frequency entered is not a whole number greater than zero. In these cases the user 
+  // is given an alert instead.
   $("#add-train").on("click", function() {
     event.preventDefault();
     var firstTrainTime = $("#first-train-time").val().trim();
     var frequency = $("#frequency").val().trim();
     console.log(firstTrainTime);
+    console.log(frequency);
     if (!moment(firstTrainTime, "hh:mm").isValid()) {
       alert("Please enter a valid time.");
     }
-    else if (isNaN(frequency)) {
+    else if (frequency <= 0 || frequency % 1 != 0) {
       alert("Please enter a valid frequency.");
     }
     else {
@@ -74,11 +76,10 @@ $(document).ready(function() {
     }
   });
 
-  // Runs function when a new child is added to the database
-  // Train info is pulled from the database, first train time is converted to 12 hour format
-  // using MomentJS, math is utilized to determine the next arrival time and minutes away
-  // based on the current time (from MomentJS), and all of this info is displayed in the
-  // Current Schedule panel
+  // Runs function when a new child is added to the database, train info is pulled from the 
+  // database and displayed in the Train Schedule panel
+  // The next arrival time (converted into 12 hour format) and minutes away are calculated
+  // with the help of Momentjs
   database.ref().on("child_added", function(childSnapshot, prevChildKey) {
     console.log(childSnapshot.val());
 
@@ -93,8 +94,10 @@ $(document).ready(function() {
     console.log(frequency);
 
     var currentTime = moment();
-    var firstTrainTimeConverted = moment(firstTrainTime, "hh:mm").subtract(1, "years");
+    var firstTrainTimeConverted = moment(firstTrainTime, "hh:mm").subtract(1, "days");
+    console.log(firstTrainTimeConverted);
     var timeDifference = moment().diff(moment(firstTrainTimeConverted), "minutes");
+    console.log(timeDifference)
     var timeRemainder = timeDifference % frequency;
     var minutesAway = frequency - timeRemainder;
     var nextArrival = moment().add(minutesAway, "minutes").format("h:mm A");
