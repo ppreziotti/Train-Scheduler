@@ -1,5 +1,9 @@
 // GLOBAL VARIABLES
 // ==========================================================================================
+var newTrainName;
+var newDestination;
+var newFirstTrainTime;
+var newFrequency;
 
 // Initializing Firebase
 var config = {
@@ -23,11 +27,6 @@ var database = firebase.database();
 // user input. The train is then stored in the firebase database and the user input fields
 // are cleared.
 function addTrain() {
-  var newTrainName = $("#train-name").val().trim();
-  var newDestination = $("#destination").val().trim();
-  var newFirstTrainTime = $("#first-train-time").val().trim();
-  var newFrequency = $("#frequency").val().trim();
-
   var newTrain = {
     trainName: newTrainName,
     destination: newDestination,
@@ -61,19 +60,33 @@ $(document).ready(function() {
   // is given an alert instead.
   $("#add-train").on("click", function() {
     event.preventDefault();
-    var firstTrainTime = $("#first-train-time").val().trim();
-    var frequency = $("#frequency").val().trim();
-    console.log(firstTrainTime);
-    console.log(frequency);
-    if (!moment(firstTrainTime, "hh:mm").isValid()) {
-      alert("Please enter a valid time.");
+
+    newTrainName = $("#train-name").val().trim();
+    newDestination = $("#destination").val().trim();
+    newFirstTrainTime = $("#first-train-time").val().trim();
+    newFrequency = $("#frequency").val().trim();
+
+    var checkTrainName = /^[A-Za-z_]{3,20}$/;
+    var checkDestination = /^[A-Za-z_]{3,20}$/;
+    var checkFirstTrainTime = /^([01]\d|2[0-3]):([0-5]\d)$/;//
+    var checkFrequency = /^[0-9]{1,4}$/;
+
+    if (!checkTrainName.test(newTrainName)) {
+      alert("Please enter a valid train name.");
+    } 
+    else if (!checkDestination.test(newDestination)) {
+      alert("Please enter a valid destination.");
     }
-    else if (frequency <= 0 || frequency % 1 != 0) {
+    else if (!checkFirstTrainTime.test(newFirstTrainTime) || !moment(newFirstTrainTime, "hh:mm").isValid()) {
+      alert("Please enter a valid first train time.");
+    }
+    else if (!checkFrequency.test(newFrequency) || newFrequency <= 0 || newFrequency % 1 != 0) {
       alert("Please enter a valid frequency.");
     }
     else {
       addTrain();
     }
+
   });
 
   // Runs function when a new child is added to the database, train info is pulled from the 
