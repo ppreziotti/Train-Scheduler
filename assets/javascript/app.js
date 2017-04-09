@@ -55,9 +55,9 @@ function addTrain() {
 // Runs the following logic once the page is ready
 $(document).ready(function() {
   // When the add train button is clicked the addTrain function is executed without refreshing
-  // the page. The function will not be executed if the first train time entered is not valid or
-  // if the frequency entered is not a whole number greater than zero. In these cases the user 
-  // is given an alert instead.
+  // the page. Checks are put into place in order to make sure the user input for each train
+  // detail is valid before executing addTrain. If any input is not valid the user will 
+  // receive an alert.
   $("#add-train").on("click", function() {
     event.preventDefault();
 
@@ -66,14 +66,18 @@ $(document).ready(function() {
     newFirstTrainTime = $("#first-train-time").val().trim();
     newFrequency = $("#frequency").val().trim();
 
-    var checkTrainName = /^[A-Za-z_]{3,20}$/;
-    var checkDestination = /^[A-Za-z_]{3,20}$/;
+    // Authentication for train variables - train name and destination can only contain 
+    // letters and spaces and must be between 3-20 characters, first train time must 
+    // be entered in proper military time format, and frequency must be a positive 
+    // whole number between 1 and 4 digits
+    var checkTrainName = /^[A-Za-z\s]{3,20}$/;
+    var checkDestination = /^[A-Za-z\s]{3,20}$/;
     var checkFirstTrainTime = /^([01]\d|2[0-3]):([0-5]\d)$/;//
     var checkFrequency = /^[0-9]{1,4}$/;
 
     if (!checkTrainName.test(newTrainName)) {
       alert("Please enter a valid train name.");
-    } 
+    }
     else if (!checkDestination.test(newDestination)) {
       alert("Please enter a valid destination.");
     }

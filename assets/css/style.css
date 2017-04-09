@@ -2,12 +2,13 @@
 	background-image: url('../images/train.jpg');
 	background-size: cover;
 	background-position: center center;
-	color: #FF3F00;
+	color: #df4601;
 	text-align: center;
 }
 
 body {
 	background-image: url('../images/old_moon.png');
+	color: black;
 }
 
 .panel-default {
@@ -15,8 +16,9 @@ body {
 }
 
 .panel-default > .panel-heading {
-	background-color: #FF3F00;
+	background-color: #df4601;
 	font-weight: bold;
+	color: black;
 }
 
 table {
@@ -24,6 +26,7 @@ table {
 }
 
 #add-train {
-	background-color: #FF3F00;
+	background-color: #df4601;
 	font-weight: bold;
+	color: black;
 }
